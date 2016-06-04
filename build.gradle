@@ -27,8 +27,13 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.data:spring-data-jpa:1.9.0.RELEASE')
+
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.data:spring-data-rest-webmvc:2.4.0.RELEASE')
+
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+
 	runtime('org.hsqldb:hsqldb')
 	testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
