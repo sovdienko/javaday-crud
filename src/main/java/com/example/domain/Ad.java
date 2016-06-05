@@ -87,10 +87,24 @@ public class Ad implements Identifiable<Long>
     }
 
     private String comment;
-
+    @Lob
     private LocalDateTime publishedAt;
 
-    @Override
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.NEW;
+    public enum Status {
+                NEW,
+                PUBLISHED,
+                EXPIRED
+    }
+
+    public Status getStatus() {return status;}
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
@@ -161,5 +175,21 @@ public class Ad implements Identifiable<Long>
 
     public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
+    }
+    public void publish() {
+        if (status == Status.NEW) {
+            publishedAt = LocalDateTime.now();
+            status = Status.PUBLISHED;
+        } else {
+            throw new InvalidAdStateTransitionException("Ad is already published");
+        }
+    }
+    public void expire(){
+        if(status == Status.PUBLISHED){
+           status = Status.EXPIRED;
+        } else {
+           throw new InvalidAdStateTransitionException(
+                   "Ad can be finished when it is in the " + Status.PUBLISHED);
+        }
     }
 }

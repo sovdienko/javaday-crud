@@ -107,7 +107,7 @@ public class AppConfig {
         ad.setLocation(new Ad.Location(CITY, nextDistrict()));
         ad.setComment(nextComments());
         ad.setPublishedAt(nextPublishingTime(publishedAt));
-
+        ad.setStatus(Ad.Status.PUBLISHED);
         return ad;
     }
 
@@ -146,6 +146,23 @@ public class AppConfig {
         return nextRandomFromArray(COMMENTS);
     }
 
+    private void setupAdmin(LocalDateTime publishedAt) {
+        User admin = new User();
+        admin.setPhoneNumber("hontareva");
+        userRepository.save(admin);
+        Ad ad = new Ad();
+        ad.setType(Ad.Type.BUY);
+        ad.setAmount(BigInteger.valueOf(100000000));
+        ad.setCurrency(Ad.Currency.USD);
+        ad.setRate(nextRate(ad.getCurrency(), ad.getType()));
+        ad.setUser(admin);
+        ad.setStatus(Ad.Status.PUBLISHED);
+        ad.setPublishedAt(publishedAt);
+        ad.setLocation(new Ad.Location("Киев", "Печерск"));
+        ad.setComment("играем по крупному");
+        adRepository.save(ad);
+    }
+
     public void load() {
         int amount = 100;
         LocalDateTime now = LocalDateTime.now();
@@ -161,7 +178,10 @@ public class AppConfig {
 
             at = ad.getPublishedAt();
         }
+        setupAdmin(publishedAt.minusMinutes(10));
     }
+
+
 
     @Bean
     CommandLineRunner commandLineRunner(AppConfig dataLoader) {
