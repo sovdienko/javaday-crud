@@ -1,5 +1,5 @@
 # javaday-crud
-JavaDay 2015 CRUD Example
+JavaDay 2015 CRUD Example + Hypermedia HATEOAS Spring
 
 https://www.youtube.com/watch?v=uwBcrIrrrF8
 
